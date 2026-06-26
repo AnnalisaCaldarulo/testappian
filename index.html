@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Appian Senior Developer Quiz</title>
+<link rel="stylesheet" href="./main.css">
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">A</div>
+  <div>
+    <div class="header h1" style="font-size:15px;font-weight:600">Appian Senior Developer</div>
+    <div class="sub">ACD201 Certification Practice Quiz</div>
+  </div>
+  <div class="header-right">
+    <span id="progress-text"></span>
+    <span id="timer" style="display:none">00:00</span>
+  </div>
+</div>
+<div class="progress-bar-wrap"><div class="progress-bar" id="progress-bar" style="width:0%"></div></div>
+
+<div class="layout">
+  <div class="sidebar">
+    <h2>Topics</h2>
+    <button class="topic-btn active" onclick="filterTopic('all')" id="btn-all">
+      <span class="topic-dot" style="background:#7c82a3"></span> All Topics
+      <span class="topic-score" id="sc-all">–</span>
+    </button>
+    <div class="sidebar-divider"></div>
+    <button class="topic-btn" onclick="filterTopic('AI')" id="btn-AI">
+      <span class="topic-dot" style="background:#4f7fff"></span> AI in Appian
+      <span class="topic-score" id="sc-AI">–</span>
+    </button>
+    <button class="topic-btn" onclick="filterTopic('DocCenter')" id="btn-DocCenter">
+      <span class="topic-dot" style="background:#7b5ea7"></span> DocCenter
+      <span class="topic-score" id="sc-DocCenter">–</span>
+    </button>
+    <button class="topic-btn" onclick="filterTopic('Process')" id="btn-Process">
+      <span class="topic-dot" style="background:#06b6d4"></span> Process Models
+      <span class="topic-score" id="sc-Process">–</span>
+    </button>
+    <button class="topic-btn" onclick="filterTopic('Integration')" id="btn-Integration">
+      <span class="topic-dot" style="background:#22c55e"></span> Integrations
+      <span class="topic-score" id="sc-Integration">–</span>
+    </button>
+    <button class="topic-btn" onclick="filterTopic('Testing')" id="btn-Testing">
+      <span class="topic-dot" style="background:#f59e0b"></span> Testing
+      <span class="topic-score" id="sc-Testing">–</span>
+    </button>
+    <button class="topic-btn" onclick="filterTopic('RPA')" id="btn-RPA">
+      <span class="topic-dot" style="background:#ef4444"></span> RPA / Robots
+      <span class="topic-score" id="sc-RPA">–</span>
+    </button>
+    <button class="topic-btn" onclick="filterTopic('ACD201')" id="btn-ACD201">
+      <span class="topic-dot" style="background:#ff6b35"></span> ACD201 Exam Bank
+      <span class="topic-score" id="sc-ACD201">–</span>
+    </button>
+    <div class="sidebar-divider"></div>
+    <button class="topic-btn" onclick="goHome()" style="color:var(--muted)">⬅ Home</button>
+  </div>
+
+  <div class="main">
+    <div id="home">
+      <div>
+        <div class="home-title">Appian Senior Dev Quiz</div>
+        <div class="home-subtitle" style="margin-top:8px">Practice questions from your course notes</div>
+      </div>
+      <div class="home-stats">
+        <div class="stat-card"><div class="stat-num" id="total-q-count">–</div><div class="stat-label">Questions</div></div>
+        <div class="stat-card"><div class="stat-num">7</div><div class="stat-label">Topics</div></div>
+        <div class="stat-card"><div class="stat-num" id="multi-count">–</div><div class="stat-label">Multi-select</div></div>
+      </div>
+      <div style="text-align:center">
+        <div style="font-size:13px;color:var(--muted);margin-bottom:14px">Options:</div>
+        <div class="home-options">
+          <label class="home-opt"><input type="checkbox" id="opt-shuffle" checked> 🔀 Shuffle questions</label>
+          <label class="home-opt"><input type="checkbox" id="opt-timer"> ⏱ Show timer</label>
+          <label class="home-opt"><input type="checkbox" id="opt-wrong-only"> ❌ Wrong answers only</label>
+        </div>
+      </div>
+      <button class="start-btn" onclick="startQuiz()">Start Quiz →</button>
+    </div>
+
+    <div id="quiz">
+      <div id="q-category" class="q-category"></div>
+      <div id="unknown-tag" class="unknown-tag" style="display:none">⚠ Answer not confirmed in notes</div>
+      <div id="q-note" class="q-note" style="display:none"></div>
+      <div id="q-scenario" class="q-scenario" style="display:none"></div>
+      <div id="q-text" class="q-text"></div>
+      <div id="options" class="options"></div>
+      <div class="q-actions">
+        <button class="btn-submit" id="btn-submit" onclick="submitAnswer()" disabled>Confirm</button>
+        <button class="btn-next" id="btn-next" onclick="nextQuestion()">Next →</button>
+        <button class="btn-skip" onclick="nextQuestion()">Skip</button>
+        <span class="q-number" id="q-number"></span>
+      </div>
+      <div class="explanation" id="explanation">
+        <div id="result-badge"></div>
+        <div class="label">Explanation</div>
+        <div class="text" id="exp-text"></div>
+      </div>
+    </div>
+
+    <div id="results">
+      <div class="results-hero">
+        <div class="score-ring" id="score-ring">
+          <div class="score-inner" id="score-pct">–</div>
+        </div>
+        <div class="results-title" id="results-title">Quiz Complete!</div>
+        <div class="results-sub" id="results-sub"></div>
+      </div>
+      <div class="results-grid" id="results-grid"></div>
+      <div class="results-actions">
+        <button class="btn-primary" onclick="showReview()">📋 Review Answers</button>
+        <button class="btn-secondary" onclick="startQuiz()">🔄 Retry</button>
+        <button class="btn-danger" onclick="startQuizWrongOnly()">❌ Wrong Only</button>
+        <button class="btn-secondary" onclick="goHome()">🏠 Home</button>
+      </div>
+    </div>
+
+    <div id="review">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px">
+        <button class="btn-secondary" onclick="showResults()" style="padding:8px 16px;font-size:13px">← Back</button>
+        <h2 style="font-size:18px">Answer Review</h2>
+      </div>
+      <div id="review-list"></div>
+    </div>
+
+  </div>
+</div>
+
+<script src="./script.js">
+
+</script>
+</body>
+</html>
