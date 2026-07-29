@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Appian Senior Developer Quiz</title>
-<link rel="stylesheet" href="./main.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Appian Senior Developer Quiz</title>
+  <link rel="stylesheet" href="./main.css">
 </head>
 <body>
 
 <div class="header">
   <div class="logo">A</div>
   <div>
-    <div class="header h1" style="font-size:15px;font-weight:600">Appian Senior Developer</div>
+    <div class="header-title">Appian Senior Developer</div>
     <div class="sub">ACD201 Certification Practice Quiz</div>
   </div>
   <div class="header-right">
@@ -22,10 +22,11 @@
 <div class="progress-bar-wrap"><div class="progress-bar" id="progress-bar" style="width:0%"></div></div>
 
 <div class="layout">
+  <!-- SIDEBAR -->
   <div class="sidebar">
-    <h2>Topics</h2>
+    <h2>Argomenti</h2>
     <button class="topic-btn active" onclick="filterTopic('all')" id="btn-all">
-      <span class="topic-dot" style="background:#7c82a3"></span> All Topics
+      <span class="topic-dot" style="background:#7c82a3"></span> Tutti
       <span class="topic-score" id="sc-all">–</span>
     </button>
     <div class="sidebar-divider"></div>
@@ -61,69 +62,89 @@
     <button class="topic-btn" onclick="goHome()" style="color:var(--muted)">⬅ Home</button>
   </div>
 
+  <!-- MAIN CONTENT -->
   <div class="main">
+
+    <!-- HOME -->
     <div id="home">
       <div>
         <div class="home-title">Appian Senior Dev Quiz</div>
-        <div class="home-subtitle" style="margin-top:8px">Practice questions from your course notes</div>
+        <div class="home-subtitle" style="margin-top:8px">Domande tratte dai tuoi appunti</div>
       </div>
       <div class="home-stats">
-        <div class="stat-card"><div class="stat-num" id="total-q-count">–</div><div class="stat-label">Questions</div></div>
-        <div class="stat-card"><div class="stat-num">7</div><div class="stat-label">Topics</div></div>
-        <div class="stat-card"><div class="stat-num" id="multi-count">–</div><div class="stat-label">Multi-select</div></div>
+        <div class="stat-card"><div class="stat-num" id="total-q-count">–</div><div class="stat-label">Domande</div></div>
+        <div class="stat-card"><div class="stat-num">7</div><div class="stat-label">Argomenti</div></div>
+        <div class="stat-card"><div class="stat-num" id="multi-count">–</div><div class="stat-label">Multi‑selezione</div></div>
       </div>
-      <div style="text-align:center">
-        <div style="font-size:13px;color:var(--muted);margin-bottom:14px">Options:</div>
-        <div class="home-options">
-          <label class="home-opt"><input type="checkbox" id="opt-shuffle" checked> 🔀 Shuffle questions</label>
-          <label class="home-opt"><input type="checkbox" id="opt-timer"> ⏱ Show timer</label>
-          <label class="home-opt"><input type="checkbox" id="opt-wrong-only"> ❌ Wrong answers only</label>
+
+      <!-- Selezione argomenti -->
+      <div style="margin: 20px 0 12px; text-align:center;">
+        <div style="font-size:13px;color:var(--muted);margin-bottom:8px;">Seleziona gli argomenti da includere:</div>
+        <div id="topic-selector" style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:8px;"></div>
+        <div style="display:flex;gap:8px;justify-content:center;margin-bottom:8px;">
+          <button class="btn-secondary" style="padding:4px 12px;font-size:12px;" onclick="selectAllTopics(true)">Seleziona tutti</button>
+          <button class="btn-secondary" style="padding:4px 12px;font-size:12px;" onclick="selectAllTopics(false)">Deseleziona tutti</button>
+        </div>
+        <div style="margin-top: 8px; font-size: 13px; color: var(--muted);">
+          Domande selezionate: <span id="filtered-count" style="font-weight:600;color:var(--accent);">0</span>
         </div>
       </div>
-      <button class="start-btn" onclick="startQuiz()">Start Quiz →</button>
+
+      <div style="text-align:center">
+        <div style="font-size:13px;color:var(--muted);margin-bottom:14px;">Opzioni:</div>
+        <div class="home-options">
+          <label class="home-opt"><input type="checkbox" id="opt-shuffle" checked> 🔀 Shuffle</label>
+          <label class="home-opt"><input type="checkbox" id="opt-timer"> ⏱ Timer</label>
+          <label class="home-opt"><input type="checkbox" id="opt-wrong-only"> ❌ Solo errate</label>
+        </div>
+      </div>
+      <button class="start-btn" onclick="startQuiz()">Avvia Quiz →</button>
     </div>
 
-    <div id="quiz">
+    <!-- QUIZ -->
+    <div id="quiz" style="display:none;">
       <div id="q-category" class="q-category"></div>
-      <div id="unknown-tag" class="unknown-tag" style="display:none">⚠ Answer not confirmed in notes</div>
+      <div id="unknown-tag" class="unknown-tag" style="display:none">⚠ Risposta non confermata</div>
       <div id="q-note" class="q-note" style="display:none"></div>
       <div id="q-scenario" class="q-scenario" style="display:none"></div>
       <div id="q-text" class="q-text"></div>
       <div id="options" class="options"></div>
       <div class="q-actions">
-        <button class="btn-submit" id="btn-submit" onclick="submitAnswer()" disabled>Confirm</button>
-        <button class="btn-next" id="btn-next" onclick="nextQuestion()">Next →</button>
-        <button class="btn-skip" onclick="nextQuestion()">Skip</button>
+        <button class="btn-submit" id="btn-submit" onclick="submitAnswer()" disabled>Conferma</button>
+        <button class="btn-next" id="btn-next" onclick="nextQuestion()">Prossima →</button>
+        <button class="btn-skip" onclick="nextQuestion()">Salta</button>
         <span class="q-number" id="q-number"></span>
       </div>
       <div class="explanation" id="explanation">
         <div id="result-badge"></div>
-        <div class="label">Explanation</div>
+        <div class="label">Spiegazione</div>
         <div class="text" id="exp-text"></div>
       </div>
     </div>
 
-    <div id="results">
+    <!-- RISULTATI -->
+    <div id="results" style="display:none;">
       <div class="results-hero">
         <div class="score-ring" id="score-ring">
           <div class="score-inner" id="score-pct">–</div>
         </div>
-        <div class="results-title" id="results-title">Quiz Complete!</div>
+        <div class="results-title" id="results-title">Quiz completato!</div>
         <div class="results-sub" id="results-sub"></div>
       </div>
       <div class="results-grid" id="results-grid"></div>
       <div class="results-actions">
-        <button class="btn-primary" onclick="showReview()">📋 Review Answers</button>
-        <button class="btn-secondary" onclick="startQuiz()">🔄 Retry</button>
-        <button class="btn-danger" onclick="startQuizWrongOnly()">❌ Wrong Only</button>
+        <button class="btn-primary" onclick="showReview()">📋 Rivedi risposte</button>
+        <button class="btn-secondary" onclick="startQuiz()">🔄 Riprova</button>
+        <button class="btn-danger" onclick="startQuizWrongOnly()">❌ Solo errate</button>
         <button class="btn-secondary" onclick="goHome()">🏠 Home</button>
       </div>
     </div>
 
-    <div id="review">
+    <!-- REVIEW -->
+    <div id="review" style="display:none;">
       <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px">
-        <button class="btn-secondary" onclick="showResults()" style="padding:8px 16px;font-size:13px">← Back</button>
-        <h2 style="font-size:18px">Answer Review</h2>
+        <button class="btn-secondary" onclick="showResults()" style="padding:8px 16px;font-size:13px">← Indietro</button>
+        <h2 style="font-size:18px">Rivedi le risposte</h2>
       </div>
       <div id="review-list"></div>
     </div>
@@ -131,8 +152,6 @@
   </div>
 </div>
 
-<script src="./script.js">
-
-</script>
+<script src="./script.js"></script>
 </body>
 </html>
